@@ -11,6 +11,14 @@ struct SettingsView: View {
     @AppStorage("numConns") private var numConns: Int = 3
     @AppStorage("useProxy") private var useProxy: Bool = false
 
+    private func openDataDirectory() {
+        let fileManager = FileManager.default
+        if let containerURL = fileManager.urls(for: .libraryDirectory, in: .userDomainMask).first {
+            let appSupportURL = containerURL.deletingLastPathComponent()
+            NSWorkspace.shared.open(appSupportURL)
+        }
+    }
+
     var body: some View {
         Form {
             Section {
@@ -29,6 +37,17 @@ struct SettingsView: View {
                             .foregroundStyle(.secondary)
                         
                     }
+                    
+                    Divider()
+                        .padding(.vertical, 8)
+                    
+                    Button(action: openDataDirectory) {
+                        HStack {
+                            Image(systemName: "folder")
+                            Text("Open Data Directory")
+                        }
+                    }
+                    .buttonStyle(.plain)
                 }
             }
         }
